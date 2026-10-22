@@ -1,3 +1,29 @@
+# 📚 每日一本好書：V8.4 手機 PWA 啟動修正版
+
+本版修正 GitHub Pages 子目錄下 PWA 安裝後可能無法開啟的問題。以相對路徑 `./index.html` 啟動，限定 Service Worker 作用範圍為目前儲存庫目錄，並分開處理頁面導覽與 JS/CSS 快取。保留原有圖書推薦、AI 圖卡與七大顯示設定。
+
+## 必要設定
+
+1. 在 `js/app.js` 將 `PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE` 換成實際 Apps Script Web App 的 `/exec` URL（不可放 Gemini API Key）。若已更新過，這份下載檔的設定仍需重新填入。
+2. 將 ZIP 解壓後**裡面的檔案與資料夾**上傳到 GitHub 儲存庫根目錄；不要額外多上一層資料夾。檢查 `https://<帳號>.github.io/<儲存庫>/index.html` 能直接開啟。
+3. GitHub → Settings → Pages：`Deploy from a branch`、`main`、`/(root)`；確認 `manifest.webmanifest`、`sw.js`、`js/app.js` 可以直接以網址存取。
+4. **移除手機上舊版「每日一本好書」主畫面 App**，先在手機瀏覽器開啟 `https://<帳號>.github.io/<儲存庫>/index.html?v=84` 並確認書籍正常載入，再選「加入主畫面／安裝應用程式」。
+5. 若手機仍開不起來，清除該網站的瀏覽資料／Service Worker 後重新進入網頁安裝。清除站台資料會一併移除本機收藏與設定。
+
+## 問題診斷
+
+- **一般瀏覽器也打不開**：檢查 GitHub Pages 是否部署完成、網址是否包含儲存庫路徑，是否發生 404。
+- **一般瀏覽器可開、主畫面 App 無法開**：移除舊 App、重訪完整 `index.html`，待新版 Service Worker 啟用後重新安裝。
+- **能開 App 卻沒有書**：檢查 `js/app.js` 的 `/exec` URL、公開 Web App 權限，以及 API 是否回傳書籍。
+- **離線開啟沒有最新資料**：屬正常現象。離線只能顯示曾經成功快取的資料；Google Drive 圖卡也未必離線可讀。
+- **學校手機或瀏覽器禁止 PWA**：可能受到裝置管理或瀏覽器版本限制，請先使用一般瀏覽器模式。
+
+## 安全與限制
+
+網站僅儲存已公開的推薦資料。本機收藏與顯示設定儲存在使用者裝置。PWA 本身無法保證 100 天 Gemini／Apps Script 的後端工作持續成功。
+
+---
+
 # 📚 每日一本好書：互動式閱讀 PWA（V8）
 
 本專案是供高中學生使用的「100 天，每天一本書」閱讀推廣網站，使用 **GitHub Pages + Google Apps Script Web API + Google 試算表 + Gemini 圖卡**，不用另建資料庫。
