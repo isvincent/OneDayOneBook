@@ -16,8 +16,8 @@
 <div class="status" id="status" role="status">正在連接資料來源…</div><section class="cards" id="list" aria-live="polite"></section></main><footer class="footer">閱讀推薦內容經館方審核後公布。出版資料請以出版社正式書目為準。</footer>
 <script>
 'use strict';
-// ★ 部署 Apps Script 後，將下方網址換成你的「https://script.google.com/macros/s/AKfycbygfaYuL5VrqliRPyahGOnj9YvJL_7TWZrzHZZvv0oIrc4EIjCuwtVQyHTyperYAYc/exec」網址。
-const API_URL = 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+// ★ 部署 Apps Script 後，將下方網址換成你的「/exec」網址。
+const API_URL = 'https://script.google.com/macros/s/AKfycbygfaYuL5VrqliRPyahGOnj9YvJL_7TWZrzHZZvv0oIrc4EIjCuwtVQyHTyperYAYc/exec';
 const $ = id => document.getElementById(id);
 let books = [];
 function node(tag, className, text){const e=document.createElement(tag); if(className)e.className=className; if(text!==undefined)e.textContent=String(text);return e;}
