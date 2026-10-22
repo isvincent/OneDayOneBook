@@ -6,6 +6,11 @@
 <title>每日一本好書｜圖書館閱讀推薦</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#183b35;background:#f7f8f3}*{box-sizing:border-box}body{margin:0}a{color:#0e6257}button,input,select{font:inherit}.hero{background:linear-gradient(115deg,#11483f,#216d61);color:#fff;padding:36px 20px 48px}.wrap{max-width:1050px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-weight:800;font-size:1.1rem}.tiny{font-size:.85rem;opacity:.8}.hero h1{font-size:clamp(2rem,6vw,3.3rem);margin:40px 0 8px}.hero p{font-size:1.1rem;max-width:600px;line-height:1.8}.tag{border:1px solid #ffffff60;border-radius:99px;padding:7px 12px;font-size:.85rem}.main{margin:-22px auto 60px;position:relative;padding:0 18px}.panel,.book{border:1px solid #e2e9dd;background:#fff;box-shadow:0 6px 24px #103f3610;border-radius:20px}.panel{padding:24px}.section-title{margin:32px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.muted{color:#687b73}.featured{display:grid;grid-template-columns:130px 1fr;gap:24px}.cover{background:linear-gradient(145deg,#e4eddb,#bdd4c8);border-radius:14px;display:grid;place-items:center;min-height:180px;color:#276055;text-align:center;padding:12px}.cover svg{width:55px}.eyebrow{color:#227c65;font-weight:800;letter-spacing:.04em;font-size:.85rem}.featured h2{font-size:clamp(1.5rem,4vw,2rem);margin:8px 0}.meta{color:#5b7068;line-height:1.8}.copy{line-height:1.9;white-space:pre-wrap}.book-detail{margin-top:16px;padding-top:14px;border-top:1px solid #e6ebe4}.book-detail h3{font-size:1rem;margin:8px 0}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.controls input,.controls select{border:1px solid #cbd7cd;border-radius:12px;padding:12px;background:white;min-height:48px}.controls input{flex:1;min-width:170px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px}.book{padding:20px}.book h3{margin:10px 0;font-size:1.17rem}.book .copy{font-size:.94rem;line-height:1.7}.pill{display:inline-block;background:#e8f4ed;color:#1a755c;padding:5px 10px;border-radius:30px;font-weight:700;font-size:.8rem}.btn{cursor:pointer;background:#14594d;color:#fff;border:0;border-radius:12px;padding:10px 16px;font-weight:700;min-height:44px}.btn.alt{background:#eaf1eb;color:#155449}.status{padding:13px 16px;background:#eff5ee;border-radius:12px;margin:16px 0;line-height:1.7}.empty{padding:35px 16px;text-align:center;color:#687b73}.footer{color:#687b73;text-align:center;padding:35px 16px;font-size:.88rem}.source{font-size:.83rem}.hidden{display:none!important}@media(max-width:560px){.featured{grid-template-columns:1fr}.cover{min-height:105px}.hero{padding-bottom:44px}.panel{padding:18px}.top{flex-wrap:wrap}}
+
+.infographic{width:100%;max-height:580px;object-fit:contain;background:#f4f6ef;border-radius:14px;display:block;cursor:zoom-in;border:1px solid #d9e3d9}
+.infographic-thumb{width:100%;height:180px;object-fit:cover;object-position:center top;border-radius:12px;margin:10px 0;cursor:zoom-in}
+.image-wrap{margin:18px 0}.image-wrap h3{margin:0 0 8px}.missing-image{background:#edf3eb;color:#567267;padding:18px;border-radius:12px;font-size:.9rem}
+dialog{border:0;border-radius:18px;padding:18px;width:min(95vw,800px);max-height:94vh;background:#fff;color:#183b35;box-shadow:0 20px 60px #0006}dialog::backdrop{background:#0d2f2bc9}.lightbox-img{width:100%;max-height:80vh;object-fit:contain}.lightbox-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
 </style>
 </head>
 <body>
@@ -14,6 +19,7 @@
 <div class="section-title"><h2 id="todayTitle">歷史推薦書單</h2><span id="counter" class="muted">—</span></div>
 <div class="controls"><input id="search" type="search" placeholder="搜尋書名、作者、內容…" aria-label="搜尋書籍"><select id="category" aria-label="圖書分類"><option value="">全部分類</option></select><button class="btn alt" id="reload" type="button">重新整理</button></div>
 <div class="status" id="status" role="status">正在連接資料來源…</div><section class="cards" id="list" aria-live="polite"></section></main><footer class="footer">閱讀推薦內容經館方審核後公布。出版資料請以出版社正式書目為準。</footer>
+<dialog id="lightbox" aria-label="資訊圖卡放大檢視"><div class="lightbox-head"><strong id="lightboxTitle"></strong><button class="btn alt" id="lightboxClose" type="button">關閉 ✕</button></div><img id="lightboxImage" class="lightbox-img" alt="書籍資訊圖卡放大圖片"></dialog>
 <script>
 'use strict';
 // ★ 部署 Apps Script 後，將下方網址換成你的「/exec」網址。
@@ -24,13 +30,82 @@ function node(tag, className, text){const e=document.createElement(tag); if(clas
 function add(parent,tag,cls,text){const e=node(tag,cls,text);parent.appendChild(e);return e;}
 function status(text){$('status').textContent=text;}
 function addDetail(parent,label,value){if(!value)return;const box=add(parent,'div','book-detail');add(box,'h3','',label);add(box,'div','copy',value);}
-function bookCard(b){const el=node('article','book');add(el,'span','pill','Day '+b.day+' · '+b.category);add(el,'h3','',b.title);add(el,'div','meta',b.author+'｜'+b.publisher);add(el,'div','meta','推薦日期：'+b.date);add(el,'p','copy',b.summary.length>105?b.summary.slice(0,105)+'…':b.summary);const btn=add(el,'button','btn alt','閱讀更多');btn.type='button';btn.addEventListener('click',()=>{const open=btn.textContent==='收合內容';el.querySelectorAll('.expanded').forEach(x=>x.remove());if(open){btn.textContent='閱讀更多';return;}const extra=add(el,'div','expanded');addDetail(extra,'內容簡介',b.summary);addDetail(extra,'推薦理由',b.reason);addDetail(extra,'閱讀思考題',b.question);if(b.source){const p=add(extra,'p','source');const a=add(p,'a','','查看書目參考');a.href=b.source;a.target='_blank';a.rel='noopener noreferrer';}btn.textContent='收合內容';});return el;}
+function showInfographic(b,container,thumbnail=false){
+  if(!b.infographic)return false;
+  const wrap=add(container,'div',thumbnail?'':'image-wrap');
+  if(!thumbnail)add(wrap,'h3','','AI 書籍導讀資訊圖卡');
+  const img=add(wrap,'img',thumbnail?'infographic-thumb':'infographic');
+  img.src=b.infographic;img.loading='lazy';img.alt='《'+b.title+'》AI 生成導讀資訊圖卡';img.referrerPolicy='no-referrer';
+  img.onerror=()=>{wrap.replaceChildren(node('div','missing-image','資訊圖卡暫時無法顯示，請稍後重試。'));};
+  img.tabIndex=0;img.setAttribute('role','button');img.setAttribute('aria-label','放大《'+b.title+'》資訊圖卡');
+  const open=()=>openLightbox(b);img.addEventListener('click',open);
+  img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  return true;
+}
+function openLightbox(b){const d=$('lightbox');$('lightboxTitle').textContent='《'+b.title+'》導讀圖卡';$('lightboxImage').src=b.infographic;$('lightboxImage').alt='《'+b.title+'》AI 導讀資訊圖卡';d.showModal();}
+$('lightboxClose').addEventListener('click',()=>$('lightbox').close());
+$('lightbox').addEventListener('click',e=>{if(e.target===$('lightbox'))$('lightbox').close();});
+function bookCard(b){const el=node('article','book');add(el,'span','pill','Day '+b.day+' · '+b.category);add(el,'h3','',b.title);add(el,'div','meta',b.author+'｜'+b.publisher);add(el,'div','meta','推薦日期：'+b.date);showInfographic(b,el,true);add(el,'p','copy',b.summary.length>105?b.summary.slice(0,105)+'…':b.summary);const btn=add(el,'button','btn alt','閱讀更多');btn.type='button';btn.addEventListener('click',()=>{const open=btn.textContent==='收合內容';el.querySelectorAll('.expanded').forEach(x=>x.remove());if(open){btn.textContent='閱讀更多';return;}const extra=add(el,'div','expanded');addDetail(extra,'內容簡介',b.summary);addDetail(extra,'推薦理由',b.reason);addDetail(extra,'閱讀思考題',b.question);if(b.infographic)showInfographic(b,extra);if(b.source){const p=add(extra,'p','source');const a=add(p,'a','','查看書目參考');a.href=b.source;a.target='_blank';a.rel='noopener noreferrer';}btn.textContent='收合內容';});return el;}
 function render(){const q=$('search').value.trim().toLowerCase(),cat=$('category').value;const matches=books.filter(b=>(!cat||b.category===cat)&&(!q||[b.title,b.author,b.summary,b.reason,b.category].join(' ').toLowerCase().includes(q)));$('list').replaceChildren(...matches.slice().reverse().map(bookCard));$('counter').textContent=`顯示 ${matches.length} / ${books.length} 本`;
 if(!matches.length)add($('list'),'div','empty',books.length?'找不到符合條件的圖書。':'目前沒有已發布的推薦書籍。');}
-function featured(){const p=$('featured');p.replaceChildren();if(!books.length){p.className='empty';p.textContent='目前尚無已審核、且推薦日期已到的書籍。請稍後再來。';return;}p.className='featured';const b=books[books.length-1];const cover=add(p,'div','cover');cover.innerHTML='<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M32 14C23 8 13 10 7 12v39c8-3 17-3 25 3 8-6 17-6 25-3V12c-7-3-17-4-25 2Zm0 0v40"/></svg>';const info=add(p,'div');add(info,'div','eyebrow','Day '+b.day+' · '+b.category+' · '+b.date);add(info,'h2','',b.title);add(info,'div','meta',b.author+'｜'+b.publisher+'｜'+b.published);addDetail(info,'內容簡介',b.summary);addDetail(info,'推薦理由',b.reason);addDetail(info,'想一想',b.question);if(b.source){const link=add(info,'a','source','查詢書目資訊 ↗');link.href=b.source;link.target='_blank';link.rel='noopener noreferrer';}}
-window.receiveDailyBooks=function(result){if(!result||!result.ok||!Array.isArray(result.books)){status(result?.error||'讀取失敗，請確認網頁 API 是否已部署。');return;}books=result.books.sort((a,b)=>a.day-b.day);$('dateLabel').textContent='資料日期：'+result.today+'（台灣時間）';const cats=[...new Set(books.map(b=>b.category).filter(Boolean))].sort();$('category').replaceChildren(node('option','','全部分類'));$('category').firstChild.value='';cats.forEach(c=>{const o=add($('category'),'option','',c);o.value=c;});featured();render();status(books.length?`已載入 ${books.length} 本公開推薦書籍。`:'目前尚無已審核的公開資料。');};
-let pendingScript=null;
-function loadBooks(){if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(API_URL)){status('請先在 index.html 設定 Apps Script /exec 網址。');$('featured').textContent='網站已建立，等待設定資料來源。';return;}if(pendingScript)pendingScript.remove();status('正在更新公開書單…');const s=document.createElement('script');s.src=API_URL+(API_URL.includes('?')?'&':'?')+'callback=receiveDailyBooks&_='+Date.now();s.onerror=()=>status('連線失敗。請確認部署權限為「所有人」，並使用 /exec 網址。');pendingScript=s;document.body.appendChild(s);}
+function featured(){const p=$('featured');p.replaceChildren();if(!books.length){p.className='empty';p.textContent='目前尚無已審核、且推薦日期已到的書籍。請稍後再來。';return;}p.className='featured';const b=books.slice().sort((a,c)=>a.date.localeCompare(c.date)||a.day-c.day).at(-1);const cover=add(p,'div','cover');cover.innerHTML='<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M32 14C23 8 13 10 7 12v39c8-3 17-3 25 3 8-6 17-6 25-3V12c-7-3-17-4-25 2Zm0 0v40"/></svg>';const info=add(p,'div');add(info,'div','eyebrow','Day '+b.day+' · '+b.category+' · '+b.date);add(info,'h2','',b.title);add(info,'div','meta',b.author+'｜'+b.publisher+'｜'+b.published);addDetail(info,'內容簡介',b.summary);addDetail(info,'推薦理由',b.reason);addDetail(info,'想一想',b.question);if(b.infographic)showInfographic(b,info);else add(info,'div','missing-image','本書尚未發布 AI 導讀圖卡。');if(b.source){const link=add(info,'a','source','查詢書目資訊 ↗');link.href=b.source;link.target='_blank';link.rel='noopener noreferrer';}}
+let pendingScript = null;
+let loadingTimer = null;
+let activeRequest = 0;
+let loadingFinished = false;
+
+function finishLoading() {
+  loadingFinished = true;
+  if (loadingTimer !== null) { clearTimeout(loadingTimer); loadingTimer = null; }
+  if (pendingScript) { pendingScript.remove(); pendingScript = null; }
+}
+function loadError(message) {
+  finishLoading();
+  status(message);
+  $('dateLabel').textContent = '資料更新失敗';
+  $('featured').className = 'empty';
+  $('featured').textContent = message + ' 請檢查 Apps Script /exec API 網址與部署權限。';
+}
+window.receiveDailyBooks = function(result) {
+  if (loadingFinished) return;
+  finishLoading();
+  if (!result || !result.ok || !Array.isArray(result.books)) {
+    loadError((result && result.error) || 'API 傳回的資料格式不正確。'); return;
+  }
+  books = result.books.sort((a,b)=>a.date.localeCompare(b.date)||a.day-b.day);
+  $('dateLabel').textContent = '資料日期：' + result.today + '（台灣時間）';
+  const cats = [...new Set(books.map(b => b.category).filter(Boolean))].sort();
+  $('category').replaceChildren(node('option', '', '全部分類'));
+  $('category').firstChild.value = '';
+  cats.forEach(c => { const o = add($('category'), 'option', '', c); o.value = c; });
+  featured(); render();
+  status(books.length ? `已載入 ${books.length} 本公開推薦書籍。` : 'API 已連線，目前沒有符合公開條件的資料。');
+};
+function loadBooks() {
+  if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(API_URL)) {
+    loadError('API_URL 尚未設定正確的 Apps Script /exec 網址。'); return;
+  }
+  finishLoading();
+  loadingFinished = false;
+  const requestId = ++activeRequest;
+  status('正在更新公開書單…');
+  $('featured').className = 'empty';
+  $('featured').textContent = '正在讀取推薦書籍…';
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = API_URL + (API_URL.includes('?') ? '&' : '?') +
+    'callback=receiveDailyBooks&_=' + Date.now();
+  script.onerror = () => {
+    if (requestId !== activeRequest || loadingFinished) return;
+    loadError('API 連線錯誤，可能是網址、存取權限或部署版本問題。');
+  };
+  pendingScript = script;
+  loadingTimer = setTimeout(() => {
+    if (requestId !== activeRequest || loadingFinished) return;
+    loadError('讀取超過 15 秒，API 未傳回可用資料（可能是權限、HTML 登入畫面或回呼失敗）。');
+  }, 15000);
+  document.body.appendChild(script);
+}
 $('search').addEventListener('input',render);$('category').addEventListener('change',render);$('reload').addEventListener('click',loadBooks);loadBooks();
 </script>
 </body></html>
