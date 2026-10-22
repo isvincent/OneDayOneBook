@@ -1,4 +1,4 @@
-const VERSION='daily-books-v8-1';
+const VERSION='daily-books-v8-3';
 const CORE=['./','./index.html','./css/styles.css','./js/app.js','./manifest.webmanifest','./assets/icon-192.png','./assets/icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(VERSION).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('daily-books-')&&k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
