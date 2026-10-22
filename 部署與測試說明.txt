@@ -1,0 +1,22 @@
+每日一本好書 V6：資訊圖卡整合
+
+保留原本：程式碼.gs、DailyBooks.gs、BookEnhancements.gs 及圖書試算表。
+1. 將本套件 WebApi.gs 內容完整取代 Apps Script 專案的舊 WebApi.gs（不能與舊版本同時保留 doGet）。
+2. 新增 InfographicPublish.gs，貼入同名檔案內容。
+3. 在 Apps Script 執行 setupInfographicPublishing()：在「圖卡管理」加上 H「圖片公開狀態」、I「公開圖片 URL」；不改 A:G。
+4. 若沒有圖卡，依原本 V5 流程在正式推薦100天選一筆已審核的書，執行 testSelectedBookInfographic()，先確認圖卡生成成功並出現在「圖卡管理」。
+5. 在「圖卡管理」選取要發布圖卡那一列任一儲存格，執行 publishSelectedInfographic()。此操作將該張 Drive 圖片設為「知道連結的任何人可檢視」，適用公開閱讀網站，不應用於敏感檔案。若 Workspace 禁止公開分享，將無法成功，請洽管理員或改用可公開的圖片儲存服務。
+6. 執行 previewPublicBooks()，應在公開書籍資料中看到 infographic 欄位為 https://drive.google.com/thumbnail?... 的網址。
+7. Apps Script「部署」→「管理部署作業」→編輯現有部署→「新版本」→部署；保留 /exec 網址。
+8. 在本套件 index.html 修改 API_URL 成你原本的 /exec 地址（檔案內 placeholder 位置）。
+9. 以新的 index.html 取代 GitHub 儲存庫根目錄的舊 index.html，確認 GitHub Pages 部署後強制重新整理。
+10. 開啟閱讀網站：最新書籍有圖卡則顯示，可點圖放大；歷史書單展開後也可以查看圖卡。若沒有圖卡，文字資料仍可顯示。
+
+撤回單張圖片：在「圖卡管理」選取圖卡那一列，執行 unpublishSelectedInfographic()；會調回私人權限並清空 H:I 公開資料。圖片網址可能在瀏覽器或 CDN 短暫快取，不能視為即時完全撤回。
+
+注意：
+- 只有「正式推薦100天」裡 K 欄已審核、L 欄日期不晚於今天的書才會由 API 公開；圖卡另須在「圖卡管理」H 欄為已公開。
+- 必須 Day、日期、書名三者一致，否則不會顯示圖卡。
+- 本版未改 V5 圖片生成模型；若圖卡尚無法產生，請先修復原有 V5 生圖流程。
+- 不要把 Gemini API Key 寫入 HTML 或 GitHub。
+- 不必公開整份試算表。

@@ -1,0 +1,14 @@
+在 V6 WebApi.gs 的 publicBooksPayload_()，原本：
+  const books = values.filter(row => {
+改為：
+  const books = values.filter(row => {
+且把 filter 回呼中的 return 判斷式：
+  return status === '已審核' && /^\d{4}-\d{2}-\d{2}$/.test(date) && date <= today;
+改為：
+  const day = row[0].trim();
+  const title = row[1].trim();
+  const image = artIndex[day + '|' + date + '|' + title];
+  return status === '已審核' && /^\d{4}-\d{2}-\d{2}$/.test(date) && date <= today && Boolean(image);
+
+如此學生網站只呈現已到日期、已有公開圖卡的書籍；缺圖時可能出現當日缺書，無法保證 100% 每日無縫公開。
+修改 WebApi.gs 後，Apps Script「管理部署作業 → 編輯 → 新版本」更新 /exec 正式版本。

@@ -1,111 +1,16 @@
 <!doctype html>
-<html lang="zh-Hant-TW">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#124942">
-<title>每日一本好書｜圖書館閱讀推薦</title>
-<style>
-:root{font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#183b35;background:#f7f8f3}*{box-sizing:border-box}body{margin:0}a{color:#0e6257}button,input,select{font:inherit}.hero{background:linear-gradient(115deg,#11483f,#216d61);color:#fff;padding:36px 20px 48px}.wrap{max-width:1050px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-weight:800;font-size:1.1rem}.tiny{font-size:.85rem;opacity:.8}.hero h1{font-size:clamp(2rem,6vw,3.3rem);margin:40px 0 8px}.hero p{font-size:1.1rem;max-width:600px;line-height:1.8}.tag{border:1px solid #ffffff60;border-radius:99px;padding:7px 12px;font-size:.85rem}.main{margin:-22px auto 60px;position:relative;padding:0 18px}.panel,.book{border:1px solid #e2e9dd;background:#fff;box-shadow:0 6px 24px #103f3610;border-radius:20px}.panel{padding:24px}.section-title{margin:32px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.muted{color:#687b73}.featured{display:grid;grid-template-columns:130px 1fr;gap:24px}.cover{background:linear-gradient(145deg,#e4eddb,#bdd4c8);border-radius:14px;display:grid;place-items:center;min-height:180px;color:#276055;text-align:center;padding:12px}.cover svg{width:55px}.eyebrow{color:#227c65;font-weight:800;letter-spacing:.04em;font-size:.85rem}.featured h2{font-size:clamp(1.5rem,4vw,2rem);margin:8px 0}.meta{color:#5b7068;line-height:1.8}.copy{line-height:1.9;white-space:pre-wrap}.book-detail{margin-top:16px;padding-top:14px;border-top:1px solid #e6ebe4}.book-detail h3{font-size:1rem;margin:8px 0}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.controls input,.controls select{border:1px solid #cbd7cd;border-radius:12px;padding:12px;background:white;min-height:48px}.controls input{flex:1;min-width:170px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px}.book{padding:20px}.book h3{margin:10px 0;font-size:1.17rem}.book .copy{font-size:.94rem;line-height:1.7}.pill{display:inline-block;background:#e8f4ed;color:#1a755c;padding:5px 10px;border-radius:30px;font-weight:700;font-size:.8rem}.btn{cursor:pointer;background:#14594d;color:#fff;border:0;border-radius:12px;padding:10px 16px;font-weight:700;min-height:44px}.btn.alt{background:#eaf1eb;color:#155449}.status{padding:13px 16px;background:#eff5ee;border-radius:12px;margin:16px 0;line-height:1.7}.empty{padding:35px 16px;text-align:center;color:#687b73}.footer{color:#687b73;text-align:center;padding:35px 16px;font-size:.88rem}.source{font-size:.83rem}.hidden{display:none!important}@media(max-width:560px){.featured{grid-template-columns:1fr}.cover{min-height:105px}.hero{padding-bottom:44px}.panel{padding:18px}.top{flex-wrap:wrap}}
-
-.infographic{width:100%;max-height:580px;object-fit:contain;background:#f4f6ef;border-radius:14px;display:block;cursor:zoom-in;border:1px solid #d9e3d9}
-.infographic-thumb{width:100%;height:180px;object-fit:cover;object-position:center top;border-radius:12px;margin:10px 0;cursor:zoom-in}
-.image-wrap{margin:18px 0}.image-wrap h3{margin:0 0 8px}.missing-image{background:#edf3eb;color:#567267;padding:18px;border-radius:12px;font-size:.9rem}
-dialog{border:0;border-radius:18px;padding:18px;width:min(95vw,800px);max-height:94vh;background:#fff;color:#183b35;box-shadow:0 20px 60px #0006}dialog::backdrop{background:#0d2f2bc9}.lightbox-img{width:100%;max-height:80vh;object-fit:contain}.lightbox-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
-</style>
-</head>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#13a68a"><meta name="description" content="圖書館每日一本好書，100天閱讀計畫，免費閱讀圖書導讀與AI資訊圖卡。"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" type="image/png" sizes="192x192" href="./assets/icon-192.png"><link rel="apple-touch-icon" href="./assets/icon-192.png"><link rel="stylesheet" href="./css/styles.css"><title>每日一本好書｜閱讀探索樂園</title></head>
 <body>
-<header class="hero"><div class="wrap"><div class="top"><div class="brand">📚 圖書館・每日一本好書(內容由AI自動產生)</div><div class="tag">100 天閱讀計畫</div></div><h1>今天，遇見一本好書。</h1><p>每天一本，認識不同的故事與觀點。用閱讀，讓世界再大一些。</p><span class="tiny" id="dateLabel">讀取中…</span></div></header>
-<main class="main wrap"><section class="panel" aria-labelledby="todayTitle"><div class="eyebrow">TODAY'S PICK · 最新公開推薦</div><div id="featured" class="empty">正在讀取推薦書籍…</div></section>
-<div class="section-title"><h2 id="todayTitle">歷史推薦書單</h2><span id="counter" class="muted">—</span></div>
-<div class="controls"><input id="search" type="search" placeholder="搜尋書名、作者、內容…" aria-label="搜尋書籍"><select id="category" aria-label="圖書分類"><option value="">全部分類</option></select><button class="btn alt" id="reload" type="button">重新整理</button></div>
-<div class="status" id="status" role="status">正在連接資料來源…</div><section class="cards" id="list" aria-live="polite"></section></main><footer class="footer">閱讀推薦內容經館方審核後公布。出版資料請以出版社正式書目為準。</footer>
-<dialog id="lightbox" aria-label="資訊圖卡放大檢視"><div class="lightbox-head"><strong id="lightboxTitle"></strong><button class="btn alt" id="lightboxClose" type="button">關閉 ✕</button></div><img id="lightboxImage" class="lightbox-img" alt="書籍資訊圖卡放大圖片"></dialog>
-<script>
-'use strict';
-// ★ 部署 Apps Script 後，將下方網址換成你的「/exec」網址。
-const API_URL = 'https://script.google.com/macros/s/AKfycby9pl33JCPhtZSjVlxjshltLjlkO39NEkhqdzkVHwKVVxoTOxCIhW3t7zOkghrBLZbx/exec';
-const $ = id => document.getElementById(id);
-let books = [];
-function node(tag, className, text){const e=document.createElement(tag); if(className)e.className=className; if(text!==undefined)e.textContent=String(text);return e;}
-function add(parent,tag,cls,text){const e=node(tag,cls,text);parent.appendChild(e);return e;}
-function status(text){$('status').textContent=text;}
-function addDetail(parent,label,value){if(!value)return;const box=add(parent,'div','book-detail');add(box,'h3','',label);add(box,'div','copy',value);}
-function showInfographic(b,container,thumbnail=false){
-  if(!b.infographic)return false;
-  const wrap=add(container,'div',thumbnail?'':'image-wrap');
-  if(!thumbnail)add(wrap,'h3','','AI 書籍導讀資訊圖卡');
-  const img=add(wrap,'img',thumbnail?'infographic-thumb':'infographic');
-  img.src=b.infographic;img.loading='lazy';img.alt='《'+b.title+'》AI 生成導讀資訊圖卡';img.referrerPolicy='no-referrer';
-  img.onerror=()=>{wrap.replaceChildren(node('div','missing-image','資訊圖卡暫時無法顯示，請稍後重試。'));};
-  img.tabIndex=0;img.setAttribute('role','button');img.setAttribute('aria-label','放大《'+b.title+'》資訊圖卡');
-  const open=()=>openLightbox(b);img.addEventListener('click',open);
-  img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
-  return true;
-}
-function openLightbox(b){const d=$('lightbox');$('lightboxTitle').textContent='《'+b.title+'》導讀圖卡';$('lightboxImage').src=b.infographic;$('lightboxImage').alt='《'+b.title+'》AI 導讀資訊圖卡';d.showModal();}
-$('lightboxClose').addEventListener('click',()=>$('lightbox').close());
-$('lightbox').addEventListener('click',e=>{if(e.target===$('lightbox'))$('lightbox').close();});
-function bookCard(b){const el=node('article','book');add(el,'span','pill','Day '+b.day+' · '+b.category);add(el,'h3','',b.title);add(el,'div','meta',b.author+'｜'+b.publisher);add(el,'div','meta','推薦日期：'+b.date);showInfographic(b,el,true);add(el,'p','copy',b.summary.length>105?b.summary.slice(0,105)+'…':b.summary);const btn=add(el,'button','btn alt','閱讀更多');btn.type='button';btn.addEventListener('click',()=>{const open=btn.textContent==='收合內容';el.querySelectorAll('.expanded').forEach(x=>x.remove());if(open){btn.textContent='閱讀更多';return;}const extra=add(el,'div','expanded');addDetail(extra,'內容簡介',b.summary);addDetail(extra,'推薦理由',b.reason);addDetail(extra,'閱讀思考題',b.question);if(b.infographic)showInfographic(b,extra);if(b.source){const p=add(extra,'p','source');const a=add(p,'a','','查看書目參考');a.href=b.source;a.target='_blank';a.rel='noopener noreferrer';}btn.textContent='收合內容';});return el;}
-function render(){const q=$('search').value.trim().toLowerCase(),cat=$('category').value;const matches=books.filter(b=>(!cat||b.category===cat)&&(!q||[b.title,b.author,b.summary,b.reason,b.category].join(' ').toLowerCase().includes(q)));$('list').replaceChildren(...matches.slice().reverse().map(bookCard));$('counter').textContent=`顯示 ${matches.length} / ${books.length} 本`;
-if(!matches.length)add($('list'),'div','empty',books.length?'找不到符合條件的圖書。':'目前沒有已發布的推薦書籍。');}
-function featured(){const p=$('featured');p.replaceChildren();if(!books.length){p.className='empty';p.textContent='目前尚無已審核、且推薦日期已到的書籍。請稍後再來。';return;}p.className='featured';const b=books.slice().sort((a,c)=>a.date.localeCompare(c.date)||a.day-c.day).at(-1);const cover=add(p,'div','cover');cover.innerHTML='<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M32 14C23 8 13 10 7 12v39c8-3 17-3 25 3 8-6 17-6 25-3V12c-7-3-17-4-25 2Zm0 0v40"/></svg>';const info=add(p,'div');add(info,'div','eyebrow','Day '+b.day+' · '+b.category+' · '+b.date);add(info,'h2','',b.title);add(info,'div','meta',b.author+'｜'+b.publisher+'｜'+b.published);addDetail(info,'內容簡介',b.summary);addDetail(info,'推薦理由',b.reason);addDetail(info,'想一想',b.question);if(b.infographic)showInfographic(b,info);else add(info,'div','missing-image','本書尚未發布 AI 導讀圖卡。');if(b.source){const link=add(info,'a','source','查詢書目資訊 ↗');link.href=b.source;link.target='_blank';link.rel='noopener noreferrer';}}
-let pendingScript = null;
-let loadingTimer = null;
-let activeRequest = 0;
-let loadingFinished = false;
-
-function finishLoading() {
-  loadingFinished = true;
-  if (loadingTimer !== null) { clearTimeout(loadingTimer); loadingTimer = null; }
-  if (pendingScript) { pendingScript.remove(); pendingScript = null; }
-}
-function loadError(message) {
-  finishLoading();
-  status(message);
-  $('dateLabel').textContent = '資料更新失敗';
-  $('featured').className = 'empty';
-  $('featured').textContent = message + ' 請檢查 Apps Script /exec API 網址與部署權限。';
-}
-window.receiveDailyBooks = function(result) {
-  if (loadingFinished) return;
-  finishLoading();
-  if (!result || !result.ok || !Array.isArray(result.books)) {
-    loadError((result && result.error) || 'API 傳回的資料格式不正確。'); return;
-  }
-  books = result.books.sort((a,b)=>a.date.localeCompare(b.date)||a.day-b.day);
-  $('dateLabel').textContent = '資料日期：' + result.today + '（台灣時間）';
-  const cats = [...new Set(books.map(b => b.category).filter(Boolean))].sort();
-  $('category').replaceChildren(node('option', '', '全部分類'));
-  $('category').firstChild.value = '';
-  cats.forEach(c => { const o = add($('category'), 'option', '', c); o.value = c; });
-  featured(); render();
-  status(books.length ? `已載入 ${books.length} 本公開推薦書籍。` : 'API 已連線，目前沒有符合公開條件的資料。');
-};
-function loadBooks() {
-  if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(API_URL)) {
-    loadError('API_URL 尚未設定正確的 Apps Script /exec 網址。'); return;
-  }
-  finishLoading();
-  loadingFinished = false;
-  const requestId = ++activeRequest;
-  status('正在更新公開書單…');
-  $('featured').className = 'empty';
-  $('featured').textContent = '正在讀取推薦書籍…';
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = API_URL + (API_URL.includes('?') ? '&' : '?') +
-    'callback=receiveDailyBooks&_=' + Date.now();
-  script.onerror = () => {
-    if (requestId !== activeRequest || loadingFinished) return;
-    loadError('API 連線錯誤，可能是網址、存取權限或部署版本問題。');
-  };
-  pendingScript = script;
-  loadingTimer = setTimeout(() => {
-    if (requestId !== activeRequest || loadingFinished) return;
-    loadError('讀取超過 15 秒，API 未傳回可用資料（可能是權限、HTML 登入畫面或回呼失敗）。');
-  }, 15000);
-  document.body.appendChild(script);
-}
-$('search').addEventListener('input',render);$('category').addEventListener('change',render);$('reload').addEventListener('click',loadBooks);loadBooks();
-</script>
-</body></html>
+<a class="skip" href="#main">跳至主要內容</a><div id="appFrame" class="app-frame">
+<header class="hero"><div class="shell"><nav class="nav"><a class="identity" href="#top" aria-label="首頁"><span class="identity-icon">📚</span><span data-i18n="brand">每日一本好書</span></a><div class="nav-actions"><span class="live-dot" aria-hidden="true"></span><span id="dataDate" class="date-label">資料載入中…</span><button id="settingsBtn" class="nav-button" type="button" aria-haspopup="dialog">⚙️ <span data-i18n="settings">顯示與操作設定</span></button></div></nav><div class="hero-grid" id="top"><div><div class="hero-label">✨ <span data-i18n="eyebrow">圖書館 · 100 天閱讀挑戰</span></div><h1 data-i18n="heroTitle">每天一本好書，<br>打開全新的世界！</h1><p class="hero-sub" data-i18n="heroText">閱讀一個故事，發現一種觀點。和我們一起探索每天的閱讀驚喜。</p><div class="hero-actions"><a href="#featuredSection" class="primary-button" id="jumpToday" data-i18n="todayAction">📖 閱讀今日推薦</a><a href="#librarySection" class="outline-button" data-i18n="browseAction">🗂️ 探索歷史書單</a></div></div><div class="hero-art" role="img" aria-label="色彩繽紛的書本與星星插畫"><span class="orbit orbit1">🌟</span><span class="orbit orbit2">💡</span><span class="orbit orbit3">✨</span><div class="illustration">📚</div><span class="hero-sticker">100 DAYS</span></div></div></div></header>
+<main id="main" class="shell main"><section class="stats" aria-label="閱讀進度"><div class="stat"><span>📚</span><strong id="statBooks">0</strong><small data-i18n="published">已公開書籍</small></div><div class="stat"><span>📅</span><strong id="statDay">—</strong><small data-i18n="latestDay">最新推薦 Day</small></div><div class="stat"><span>🖼️</span><strong id="statImages">0</strong><small data-i18n="infographics">AI 導讀圖卡</small></div><div class="stat"><span>❤️</span><strong id="statSaved">0</strong><small data-i18n="favorites">我的收藏</small></div></section>
+<div class="status" id="status" role="status" aria-live="polite">🔄 正在連接資料來源…</div>
+<section id="featuredSection" class="section"><div class="section-heading"><div><span class="kicker">TODAY'S READ</span><h2 data-i18n="todayHeading">🌈 今日推薦好書</h2></div><button type="button" id="randomBtn" class="soft-button">🎲 <span data-i18n="surprise">隨機探索</span></button></div><div id="featured" class="featured loading-placeholder">正在載入今日好書…</div></section>
+<section id="librarySection" class="section"><div class="section-heading"><div><span class="kicker">EXPLORE LIBRARY</span><h2 data-i18n="allBooks">🔎 探索好書書單</h2></div><button id="refreshBtn" type="button" class="soft-button">🔄 <span data-i18n="refresh">更新資料</span></button></div><div class="filters"><label class="search-box">🔎 <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" placeholder="搜尋書名、作者、主題…" aria-label="搜尋好書"></label><select id="category" aria-label="書籍分類"><option value="" data-i18n="allCategories">全部分類</option></select><select id="sort" aria-label="排序方式"><option value="new" data-i18n="newest">最新優先</option><option value="old" data-i18n="oldest">最早優先</option><option value="title" data-i18n="titleSort">書名排序</option></select><label class="only-saved"><input id="savedOnly" type="checkbox"> <span data-i18n="savedOnly">只看收藏</span></label></div><div class="section-summary" id="resultCount"></div><div class="book-grid" id="bookGrid" aria-live="polite"></div></section>
+<section class="journey"><div><span class="kicker">READ · THINK · GROW</span><h2 data-i18n="journeyTitle">閱讀，是最棒的每日冒險 🚀</h2><p data-i18n="journeyText">每天讀一點，累積屬於自己的知識宇宙。點開資訊圖卡、聽朗讀，寫下你今天的新發現。</p></div><div class="journey-icon">🚀📖🌟</div></section></main>
+<footer class="footer"><div class="shell"><strong data-i18n="brand">每日一本好書</strong><p data-i18n="footer">圖書館 100 天閱讀計畫 · 推薦內容及資訊圖卡可能由 AI 生成，出版資訊請以出版社資料為準。</p><p id="offlineNote"></p></div></footer>
+</div>
+<dialog id="settingsDialog" class="modal settings-dialog" aria-labelledby="settingsTitle"><div class="modal-top"><h2 id="settingsTitle">⚙️ <span data-i18n="settings">顯示與操作設定</span></h2><button type="button" class="icon-button close-dialog" data-close="settingsDialog" aria-label="關閉">✕</button></div><p class="settings-intro" data-i18n="settingsIntro">你可以依照閱讀環境調整畫面與操作方式。</p><div class="settings-list"><div class="setting-row"><span>🖥️ <b data-i18n="fullscreen">全螢幕</b></span><button type="button" id="fullscreenToggle" class="toggle-button" aria-pressed="false">關閉</button></div><div class="setting-row"><span>🔊 <b data-i18n="sound">音效</b></span><button type="button" id="soundToggle" class="toggle-button" aria-pressed="false">關閉</button></div><div class="setting-row"><label for="deviceSelect">📱 <b data-i18n="device">裝置</b></label><select id="deviceSelect"><option value="auto">自動</option><option value="phone">手機</option><option value="tablet">平板</option><option value="desktop">電腦</option></select></div><div class="setting-row"><label for="layoutSelect">📐 <b data-i18n="layout">版面</b></label><select id="layoutSelect"><option value="auto">自動</option><option value="portrait">直式</option><option value="landscape">橫式</option></select></div><div class="setting-row"><label for="languageSelect">🌐 <b data-i18n="language">語言</b></label><select id="languageSelect"><option value="zh">繁體中文</option><option value="en">English</option></select></div><div class="setting-row"><label for="fontSelect">🔠 <b data-i18n="font">字體</b></label><select id="fontSelect"><option value="small">縮小</option><option value="normal">標準</option><option value="large">放大</option></select></div><div class="setting-row"><label for="themeSelect">🎨 <b data-i18n="theme">色系</b></label><select id="themeSelect"><option value="system">跟隨系統</option><option value="light">亮色</option><option value="dark">暗色</option></select></div></div><div class="settings-actions"><button type="button" id="resetSettings" class="soft-button" data-i18n="reset">恢復預設</button><button type="button" class="primary-button close-dialog" data-close="settingsDialog" data-i18n="done">完成</button></div><p class="note" data-i18n="languageNote">英文模式會翻譯操作介面，書籍推薦原文仍以試算表內容為準。</p></dialog>
+<dialog id="bookDialog" class="modal book-dialog" aria-labelledby="bookDialogTitle"><div class="modal-top"><h2 id="bookDialogTitle">閱讀好書</h2><button type="button" class="icon-button close-dialog" data-close="bookDialog" aria-label="關閉">✕</button></div><div id="bookDialogContent"></div></dialog>
+<dialog id="imageDialog" class="modal image-dialog" aria-label="導讀圖卡放大檢視"><div class="modal-top"><h2 id="imageTitle">導讀資訊圖卡</h2><button type="button" class="icon-button close-dialog" data-close="imageDialog" aria-label="關閉">✕</button></div><img id="imageZoom" alt="導讀資訊圖卡大圖"><p class="note" data-i18n="imageNotice">AI 生成圖卡的文字與內容請搭配導讀文章閱讀。</p></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div><script src="./js/app.js" defer></script></body></html>

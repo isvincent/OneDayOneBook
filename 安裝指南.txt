@@ -1,0 +1,12 @@
+每日一本好書 V7
+1. 備份「正式推薦100天」與「圖卡管理」，尤其已手動填入 Day 1~10。
+2. 檢查 A 欄 Day1~10 與 L 欄 2026-10-13 到 2026-10-22 是否一一對應，日期用文字 YYYY-MM-DD；K 欄已審核。
+3. 原來 Apps Script 新增 AutoBooksV7.gs，貼入同名檔內容。保留 DailyBooks.gs、BookEnhancements.gs、InfographicPublish.gs、WebApi.gs；新函式依賴 callGemini_、bookSpreadsheet_、bv5GenerateForRow_、setupInfographicPublishing。
+4. 執行 auto7Preview（不收費）。應在 2026-10-22 看到 10/22~10/29；先核對 Day 10 必須在 10/22、Day 11 對應 10/23。
+5. 執行 auto7Run 1 次，會進行當下最早尚未完成的一項動作（備書、生成圖卡或公開），一個回合最多一項；重複執行至 preview 顯示未來 7 天已公開。
+6. 確認 Gemini 與 Drive 權限與付費額度；圖卡模型會呼叫 API，可能產生費用。由於先前的圖卡生成成功，沿用 V5 的 API 實作。
+7. 執行 auto7Install，會移除既有 runDailyBook、generateTodayBookInfographic 觸發條件，改安裝 auto7Run 每日 00、06、12、18 四次（每個時段約 1 小時內）。注意若還有其他既有排程可能產生重複，需要檢查 Apps Script 觸發條件頁。
+8. 依 WebApi_V7_patch.txt 修改 V6 WebApi.gs，將圖片視為公開必要條件；更新 /exec 部署版本。
+9. 失敗明細會寫在「V7執行紀錄」，次一排程會再處理，不會清除已成功資料。
+
+重要限制：沒有自動流程能保證 100% 準時生成成功，也無法完全杜絕 AI 虛構書目或資訊圖卡文字錯誤。自動驗證採 Google Books 同名且作者匹配的候選確認，不能代替出版社／ISBN 核對；無法驗證的書會記錄失敗並跳過。Google Workspace 可能禁止 Drive 對外分享。每次 Apps Script 限 6 分鐘，故採單次一工作設計並靠提前 7 天備書。
